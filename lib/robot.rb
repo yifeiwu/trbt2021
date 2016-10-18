@@ -32,14 +32,14 @@ class Robot
   def left
   	unless invalid_position
   	  index = get_facing_index(@facing)
-  	  self.facing = valid_facing[index-1]
+  	  self.facing = valid_facing[(index-1)%4]
   	end
   end
 
   def right
   	unless invalid_position
   	  index = get_facing_index(@facing)
-  	  self.facing = valid_facing[index+1]
+  	  self.facing = valid_facing[(index+1)%4]
   	end
   end
 

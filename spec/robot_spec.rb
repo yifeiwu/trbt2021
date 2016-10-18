@@ -96,7 +96,7 @@ RSpec.describe Robot do
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
-    it "turns robot counter-clockwise twice" do
+    it "turns robot counter-clockwise twice past array bounds" do
       bot = Robot.new(1,1,'NORTH')
       bot.left
       bot.left
@@ -123,11 +123,11 @@ RSpec.describe Robot do
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
-    it "turns robot clockwise twice" do
-      bot = Robot.new(1,1,'NORTH')
+    it "turns robot clockwise twice past array bounds" do
+      bot = Robot.new(1,1,'WEST')
       bot.right
       bot.right
-      correct_response=[1,1,'SOUTH']
+      correct_response=[1,1,'EAST']
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end

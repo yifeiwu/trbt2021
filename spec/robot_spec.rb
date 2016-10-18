@@ -3,8 +3,15 @@ require './lib/robot'
 RSpec.describe Robot do
   describe "Place and report" do
     it "places the robot and reports its position" do
-      bot = Robot.new(1,1,'north')
-      correct_response=[1,1,'north']
+      bot = Robot.new(1,1,'NORTH')
+      correct_response=[1,1,'NORTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+
+    it "ignores facing case" do
+      bot = Robot.new(1,1,'south')
+      correct_response=[1,1,'SOUTH']
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
@@ -19,21 +26,21 @@ RSpec.describe Robot do
     end
 
     it "doesn't place the robot within numeric coordinates" do
-      bot = Robot.new('blue',1,'north')
+      bot = Robot.new('blue',1,'NORTH')
       correct_response=nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
     it "doesn't place the robot within integer coordinates" do
-      bot = Robot.new(1.5,1,'north')
+      bot = Robot.new(1.5,1,'NORTH')
       correct_response=nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
     it "doesn't place the robot within table bounds" do
-      bot = Robot.new(6,1,'north')
+      bot = Robot.new(6,1,'NORTH')
       correct_response=nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
@@ -47,6 +54,39 @@ RSpec.describe Robot do
     end
   end
 
+
+  describe "Move" do
+    it "moves robot forward" do
+      bot = Robot.new(1,1,'NORTH')
+      bot.move
+      correct_response=[1,2,'NORTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+
+    it "doesn't move robot off board" do
+      bot = Robot.new(1,4,'NORTH')
+      bot.move
+      correct_response=[1,4,'NORTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+
+    it "doesn't move robot off board" do
+      bot = Robot.new(0,0,'SOUTH')
+      bot.move
+      correct_response=[0,0,'SOUTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+    it "doesn't move robot if uninitialized" do
+      bot = Robot.new(1,'','SOUTH')
+      bot.move
+      correct_response=nil
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+  end
 
 
 

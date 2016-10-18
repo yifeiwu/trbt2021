@@ -7,13 +7,15 @@ class Robot
   	self.facing = f
   end
 
-  def position=(new_position)
-  	@position = new_position
+  def move
   end
 
-  def facing=(new_facing)
-  	@facing = new_facing
+  def left
   end
+
+  def right
+  end
+  
 
   def report
   	unless invalid_position
@@ -24,6 +26,15 @@ class Robot
 
 
   private
+
+
+  def position=(new_position)
+  	@position = new_position
+  end
+
+  def facing=(new_facing)
+  	@facing = new_facing
+  end
 
   def invalid_position
   	return true if blank_fields 
@@ -37,8 +48,24 @@ class Robot
   end
 
   def blank_fields
-  	xyf.any?{|field| (field.nil?)} || xyf.any?{|field| field == ''}
+  	xyf.any?{|field| field.nil?} || xyf.any?{|field| field == ''}
+  end
 
+  def invalid_bounds
+  	return true unless @position.all?{|field| field.is_a? Integer}
+  	return true unless @position.all?{|field| (0..4) === field}
+  	false
+  end
+
+  def invalid_facings
+  	valid_facing = ["NORTH", "EAST", "SOUTH", "WEST"]
+  	valid_facing += valid_facing.map { |face| face.downcase }
+  	case @facing
+  		when *valid_facing
+  			return false
+  		else
+  			return true
+	end
   end
 
 

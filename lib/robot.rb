@@ -1,7 +1,5 @@
 class Robot
 
-  attr_reader :position, :facing
-
   def initialize(x=nil,y=nil,f=nil)
   	set_xyf(x,y,f)
   end
@@ -26,16 +24,23 @@ class Robot
       test_x = @position[0]+x_hat
       test_y = @position[1]+y_hat
       set_xyf(test_x,test_y,@facing)
-      set_xyf(*old_xyf) if invalid_position 
-
+      set_xyf(*old_xyf) if invalid_position #rollback
     end
 
   end
 
   def left
+  	unless invalid_position
+  	  index = get_facing_index(@facing)
+  	  self.facing = valid_facing[index-1]
+  	end
   end
 
   def right
+  	unless invalid_position
+  	  index = get_facing_index(@facing)
+  	  self.facing = valid_facing[index+1]
+  	end
   end
 
 
@@ -55,7 +60,8 @@ class Robot
   end
 
   def facing=(new_facing)
-    @facing = new_facing.upcase
+  	return unless new_facing.is_a? String
+  	@facing = new_facing.upcase
   end
 
   def invalid_position
@@ -85,13 +91,20 @@ class Robot
   end
 
   def invalid_facings
-    valid_facing = ["NORTH", "EAST", "SOUTH", "WEST"]
     case @facing
     when *valid_facing
       return false
     else
       return true
     end
+  end
+
+  def valid_facing
+  	["NORTH", "EAST", "SOUTH", "WEST"]
+  end
+
+  def get_facing_index(face)
+  	valid_facing.find_index{|i| i == face}
   end
 
 

@@ -88,6 +88,38 @@ RSpec.describe Robot do
     end
   end
 
+  describe "Left" do
+    it "turns robot counter-clockwise" do
+      bot = Robot.new(1,1,'NORTH')
+      bot.left
+      correct_response=[1,1,'WEST']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+    it "turns robot counter-clockwise twice" do
+      bot = Robot.new(1,1,'NORTH')
+      bot.left
+      bot.left
+      correct_response=[1,1,'SOUTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+
+    it "ignores commands if uninitialized" do
+      bot = Robot.new(1,1)
+      bot.left
+      correct_response=nil
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+
+
+
+
+  end
+
+
+
 
 
 end

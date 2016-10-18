@@ -141,6 +141,24 @@ RSpec.describe Robot do
     end
   end
 
+  describe "Place" do
+    it "places the robot" do
+      bot = Robot.new()
+      bot.place(1,1,'EAST')
+      correct_response=[1,1,'EAST']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+    it "overrides current position" do
+      bot = Robot.new(1,1,'WEST')
+      bot.right
+      bot.place(3,3,'SOUTH')
+      correct_response=[3,3,'SOUTH']
+      test_response = bot.report
+      expect(test_response).to eq(correct_response)
+    end
+  end
+
 
 
 

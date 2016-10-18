@@ -4,6 +4,10 @@ class Robot
   	set_xyf(x,y,f)
   end
 
+  def place(x=nil,y=nil,f=nil)
+  	set_xyf(x,y,f)
+  end
+
   def move
     unless invalid_position
       case @facing
@@ -26,7 +30,6 @@ class Robot
       set_xyf(test_x,test_y,@facing)
       set_xyf(*old_xyf) if invalid_position #rollback
     end
-
   end
 
   def left

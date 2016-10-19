@@ -6,6 +6,7 @@ class Robot
 
   def place(x=nil,y=nil,f=nil)
   	set_xyf(x,y,f)
+  	return
   end
 
   def move
@@ -29,6 +30,7 @@ class Robot
       test_y = @position[1]+y_hat
       set_xyf(test_x,test_y,@facing)
       set_xyf(*old_xyf) if invalid_position #rollback
+      return
     end
   end
 
@@ -36,6 +38,7 @@ class Robot
   	unless invalid_position
   	  index = get_facing_index(@facing)
   	  self.facing = valid_facing[(index-1)%4]
+  	  return
   	end
   end
 
@@ -43,6 +46,7 @@ class Robot
   	unless invalid_position
   	  index = get_facing_index(@facing)
   	  self.facing = valid_facing[(index+1)%4]
+  	  return
   	end
   end
 

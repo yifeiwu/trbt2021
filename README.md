@@ -1,6 +1,7 @@
 #Yet another implementation of the toy robot quiz
 
  - This implementation uses a file reader to handle an input file and outputs the results to stdout. Sample usage
+ 
  `reader = FileReader.new('spec/test1.txt')`
  
  `reader.process_input`

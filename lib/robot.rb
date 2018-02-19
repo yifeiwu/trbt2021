@@ -1,5 +1,7 @@
 class Robot
 
+  CARD_DIR = {NORTH: [0,1], EAST: [1,0], SOUTH: [0,-1], WEST:[-1,0]}
+
   def initialize(x=nil,y=nil,f=nil)
   	set_xyf(x,y,f)
   end
@@ -11,20 +13,7 @@ class Robot
 
   def move
     unless invalid_position
-      case @facing
-      when "NORTH"
-        x_hat = 0
-        y_hat = 1
-      when "EAST"
-      	x_hat = 1
-      	y_hat = 0
-      when "SOUTH"
-      	x_hat = 0
-      	y_hat = -1
-      when "WEST"
-      	x_hat = -1
-      	y_hat = 0
-      end
+      x_hat, y_hat = CARD_DIR[@facing]
       old_xyf = get_xyf
       test_x = @position[0]+x_hat
       test_y = @position[1]+y_hat
@@ -68,7 +57,7 @@ class Robot
 
   def facing=(new_facing)
   	return unless new_facing.is_a? String
-  	@facing = new_facing.upcase
+  	@facing = new_facing.upcase.to_sym
   end
 
   def invalid_position
@@ -83,8 +72,8 @@ class Robot
   end
 
   def set_xyf(x,y,f)
-  	self.position = x,y
-    self.facing = f
+  	@position = x,y
+    @facing = f
   end
 
   def blank_fields
@@ -107,8 +96,7 @@ class Robot
   end
 
   def valid_facing
-  	["NORTH", "EAST", "SOUTH", "WEST"]
-  end
+    %w(NORTH EAST SOUTH WEST)
 
   def get_facing_index(face)
   	valid_facing.find_index{|i| i == face}

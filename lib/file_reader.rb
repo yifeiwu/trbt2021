@@ -3,12 +3,8 @@ require 'robot'
 class FileReader
   def initialize(filename=nil)
     raise ArgumentError, "file doesn't exist" unless File.file?(filename)
-    bot ||= bot
+    @bot = Robot.new()
     @filename = filename
-  end
-
-  def bot
-    bot ||= Robot.new
   end
 
   def process_input
@@ -23,15 +19,15 @@ class FileReader
     case line
     when /PLACE (.+)/ #first placement
 	  x,y,f=($1.split(","))
-	  bot.place(x.to_i,y.to_i,f.to_s)
+	  @bot.place(x.to_i,y.to_i,f.to_s)
 	when /MOVE/
-      bot.move
+      @bot.move
     when /LEFT/
-      bot.left
+      @bot.left
     when /RIGHT/
-      bot.right
+      @bot.right
     when /REPORT/
-      a,b,c = bot.report
+      a,b,c = @bot.report
       report_string = "#{a}, #{b}, #{c}\n"
       return report_string
     end

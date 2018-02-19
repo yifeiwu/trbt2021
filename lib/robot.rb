@@ -13,7 +13,7 @@ class Robot
 
   def move
     unless invalid_position
-      x_hat, y_hat = CARD_DIR[@facing]
+      x_hat, y_hat = CARD_DIR[@facing.to_sym]
       old_xyf = get_xyf
       test_x = @position[0]+x_hat
       test_y = @position[1]+y_hat
@@ -57,7 +57,7 @@ class Robot
 
   def facing=(new_facing)
   	return unless new_facing.is_a? String
-  	@facing = new_facing.upcase.to_sym
+  	@facing = new_facing.upcase
   end
 
   def invalid_position
@@ -97,6 +97,7 @@ class Robot
 
   def valid_facing
     %w(NORTH EAST SOUTH WEST)
+  end
 
   def get_facing_index(face)
   	valid_facing.find_index{|i| i == face}

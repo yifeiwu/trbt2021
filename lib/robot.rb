@@ -57,7 +57,7 @@ class Robot
 
   def facing=(new_facing)
   	return unless new_facing.is_a? String
-  	@facing = new_facing.upcase
+  	@facing = new_facing
   end
 
   def invalid_position
@@ -73,7 +73,7 @@ class Robot
 
   def set_xyf(x,y,f)
   	@position = x,y
-    @facing = f
+    @facing = f ? f.upcase : nil
   end
 
   def blank_fields
@@ -87,12 +87,7 @@ class Robot
   end
 
   def invalid_facings
-    case @facing
-    when *valid_facing
-      return false
-    else
-      return true
-    end
+    !valid_facing.include? @facing
   end
 
   def valid_facing

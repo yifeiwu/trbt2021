@@ -1,4 +1,4 @@
-#Yet another implementation of the toy robot quiz
+# Yet another implementation of the toy robot quiz
 
  - This implementation uses a file reader to handle an input file and outputs the results to stdout. Sample usage
  

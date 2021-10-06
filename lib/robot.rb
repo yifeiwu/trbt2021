@@ -1,91 +1,86 @@
+# frozen_string_literal: true
+
+# A toy robot
 class Robot
-  CARD_DIR = { NORTH: [0, 1], EAST: [1, 0], SOUTH: [0, -1], WEST: [-1, 0] }.freeze
+  CARDINAL_DIRECTIONS = { NORTH: [0, 1], EAST: [1, 0], SOUTH: [0, -1], WEST: [-1, 0] }.freeze
+  BOARD_BOUNDARY = (0..5).freeze
 
   def initialize(x = nil, y = nil, f = nil)
-    set_xyf(x, y, f)
+    place(x, y, f)
   end
 
   def place(x = nil, y = nil, f = nil)
     set_xyf(x, y, f)
-    nil
   end
 
   def move
-    unless invalid_position
-      x_hat, y_hat = CARD_DIR[@facing.to_sym]
-      old_xyf = get_xyf
-      test_x = @position[0] + x_hat
-      test_y = @position[1] + y_hat
-      set_xyf(test_x, test_y, @facing)
-      set_xyf(*old_xyf) if invalid_position # rollback
-      nil
-    end
+    return if invalid_position?(*@position, @facing)
+
+    x_hat, y_hat = CARDINAL_DIRECTIONS[@facing.to_sym]
+    test_x = @position[0] + x_hat
+    test_y = @position[1] + y_hat
+    return if invalid_position?(test_x, test_y, @facing)
+
+    set_xyf(test_x, test_y, @facing)
   end
 
   def left
-    unless invalid_position
-      index = get_facing_index(@facing)
-      self.facing = valid_facing[(index - 1) % 4]
-      nil
-    end
+    return if invalid_position?(*@position, @facing)
+
+    index = get_facing_index(@facing)
+    @facing = valid_facings[(index - 1) % 4]
+    nil
   end
 
   def right
-    unless invalid_position
-      index = get_facing_index(@facing)
-      self.facing = valid_facing[(index + 1) % 4]
-      nil
-    end
+    return if invalid_position?(*@position, @facing)
+
+    index = get_facing_index(@facing)
+    @facing = valid_facings[(index + 1) % 4]
+    nil
   end
 
   def report
-    get_xyf unless invalid_position
+    xyf unless invalid_position?(*@position, @facing)
   end
 
   private
 
-  attr_writer :position
+  attr_writer :position, :facing
 
-  def facing=(new_facing)
-    return unless new_facing.is_a? String
-    @facing = new_facing
-  end
+  def invalid_position?(x, y, f)
+    return true if invalid_bounds?(x, y)
+    return true if invalid_facings?(f)
 
-  def invalid_position
-    return true if blank_fields
-    return true if invalid_bounds
-    return true if invalid_facings
     false
   end
 
-  def get_xyf
+  def xyf
     [@position[0], @position[1], @facing]
   end
 
   def set_xyf(x, y, f)
     @position = x, y
-    @facing = f ? f.upcase : nil
+    @facing = f&.upcase
+    nil
   end
 
-  def blank_fields
-    get_xyf.any?(&:nil?) || get_xyf.any? { |field| field == '' }
-  end
+  def invalid_bounds?(x, y)
+    return true unless [x, y].all? { |field| field.is_a?(Integer) }
+    return true unless [x, y].all? { |field| BOARD_BOUNDARY === field }
 
-  def invalid_bounds
-    return true unless @position.all? { |field| field.is_a? Integer }
-    return true unless @position.all? { |field| (0..4) === field }
     false
   end
 
-  def invalid_facings
-    !valid_facing.include? @facing
+  def invalid_facings?(f)
+    valid_facings.none? f
   end
 
-  def valid_facing
-    %w(NORTH EAST SOUTH WEST)
+  def valid_facings
+    CARDINAL_DIRECTIONS.keys.map(&:to_s)
   end
 
   def get_facing_index(face)
-    valid_facing.find_index { |i| i == face }
+    valid_facings.find_index { |i| i == face }
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/file_reader'
 
 RSpec.describe FileReader do

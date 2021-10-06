@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 require 'robot'
 
+# parses input commands and passes to robot
 class FileReader
   def initialize(filename = nil)
     raise ArgumentError, "file doesn't exist" unless File.file?(filename)
+
     @bot = Robot.new
     @filename = filename
   end
@@ -28,8 +32,8 @@ class FileReader
       @bot.right
     when /REPORT/
       a, b, c = @bot.report
-      report_string = "#{a}, #{b}, #{c}\n"
-      report_string
+      "#{a}, #{b}, #{c}\n"
+
     end
   end
 end

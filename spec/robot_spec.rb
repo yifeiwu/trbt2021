@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/robot'
 
 RSpec.describe Robot do
@@ -17,36 +19,36 @@ RSpec.describe Robot do
     end
   end
 
-  describe 'Faulty initialization' do
-    it 'has missing fields' do
+  describe 'bad initializations' do
+    it 'ignores missing fields' do
       bot = Robot.new(1, 1, '')
       correct_response = nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
-    it "doesn't place the robot within numeric coordinates" do
+    it 'ignores non-numeric coordinates numeric coordinates' do
       bot = Robot.new('blue', 1, 'NORTH')
       correct_response = nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
-    it "doesn't place the robot within integer coordinates" do
+    it 'ignores non-integer coordinates' do
       bot = Robot.new(1.5, 1, 'NORTH')
       correct_response = nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
-    it "doesn't place the robot within table bounds" do
+    it 'ignores out of table bounds placement' do
       bot = Robot.new(6, 1, 'NORTH')
       correct_response = nil
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
 
-    it "doesn't place robot with valid facing" do
+    it 'ignore invalid facing' do
       bot = Robot.new(1, 1, 'green')
       correct_response = nil
       test_response = bot.report
@@ -64,9 +66,9 @@ RSpec.describe Robot do
     end
 
     it "doesn't move robot off board" do
-      bot = Robot.new(1, 4, 'NORTH')
+      bot = Robot.new(1, 5, 'NORTH')
       bot.move
-      correct_response = [1, 4, 'NORTH']
+      correct_response = [1, 5, 'NORTH']
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
@@ -95,7 +97,7 @@ RSpec.describe Robot do
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
-    it 'turns robot counter-clockwise twice past array bounds' do
+    it 'turns robot counter-clockwise twice loopsback' do
       bot = Robot.new(1, 1, 'NORTH')
       bot.left
       bot.left
@@ -121,7 +123,7 @@ RSpec.describe Robot do
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
-    it 'turns robot clockwise twice past array bounds' do
+    it 'turns robot clockwise loops back' do
       bot = Robot.new(1, 1, 'WEST')
       bot.right
       bot.right
@@ -147,7 +149,7 @@ RSpec.describe Robot do
       test_response = bot.report
       expect(test_response).to eq(correct_response)
     end
-    it 'overrides current position' do
+    it 'overrides current position if already placed' do
       bot = Robot.new(1, 1, 'WEST')
       bot.right
       bot.place(3, 3, 'SOUTH')

@@ -13,7 +13,7 @@ class FileReader
 
   def process_input
     File.open(@filename).each do |line|
-      print parse_line_command(line)
+      parse_line_command(line)
     end
   end
 
@@ -21,7 +21,7 @@ class FileReader
 
   def parse_line_command(line = nil)
     case line
-    when /PLACE (.+)/ # first placement
+    when /PLACE (.+)/
       x, y, f = Regexp.last_match(1).split(',')
       @bot.place(x.to_i, y.to_i, f.to_s)
     when /MOVE/
@@ -32,8 +32,9 @@ class FileReader
       @bot.right
     when /REPORT/
       a, b, c = @bot.report
-      "#{a}, #{b}, #{c}\n"
-
+      puts "#{a}, #{b}, #{c}\n"
+    else
+      'Invalid command'
     end
   end
 end

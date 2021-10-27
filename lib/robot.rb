@@ -5,9 +5,7 @@ class Robot
   CARDINAL_DIRECTIONS = { NORTH: [0, 1], EAST: [1, 0], SOUTH: [0, -1], WEST: [-1, 0] }.freeze
   BOARD_BOUNDARY = (0..5).freeze
 
-  def initialize(x = nil, y = nil, f = nil)
-    place(x, y, f)
-  end
+  def initialize; end
 
   def place(x = nil, y = nil, f = nil)
     set_xyf(x, y, f)
@@ -16,9 +14,9 @@ class Robot
   def move
     return if invalid_position?(*@position, @facing)
 
-    x_hat, y_hat = CARDINAL_DIRECTIONS[@facing.to_sym]
-    test_x = @position[0] + x_hat
-    test_y = @position[1] + y_hat
+    x_dir, y_dir = CARDINAL_DIRECTIONS[@facing.to_sym]
+    test_x = @position[0] + x_dir
+    test_y = @position[1] + y_dir
     return if invalid_position?(test_x, test_y, @facing)
 
     set_xyf(test_x, test_y, @facing)
@@ -29,7 +27,6 @@ class Robot
 
     index = get_facing_index(@facing)
     @facing = valid_facings[(index - 1) % 4]
-    nil
   end
 
   def right
@@ -37,7 +34,6 @@ class Robot
 
     index = get_facing_index(@facing)
     @facing = valid_facings[(index + 1) % 4]
-    nil
   end
 
   def report
@@ -62,7 +58,6 @@ class Robot
   def set_xyf(x, y, f)
     @position = x, y
     @facing = f&.upcase
-    nil
   end
 
   def invalid_bounds?(x, y)
